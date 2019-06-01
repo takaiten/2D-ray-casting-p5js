@@ -3,6 +3,7 @@ let walls = [];
 
 let num = 360;
 let type = 0;
+let step = 10;
 
 function setup() {
   createCanvas(800, 600);
@@ -21,6 +22,16 @@ function setup() {
 
 function draw() {
   background(0);
+  if (keyIsPressed) {
+    if (key == 'a') {
+      num += num < 1440 ? step : 0;
+      ls = new LightSource(num);
+    } else if (key == 's') {
+      num -= num > step ? step : 0;
+      ls = new LightSource(num);
+    }
+  }
+
   for (let wall of walls) {
     wall.show();
   }
@@ -30,22 +41,17 @@ function draw() {
 
 // if mouse is clicked - create random boundary
 function mouseClicked() {
-  walls.push(new Boundary(random(0, width), 
-                          random(0, height), 
-                          random(0, width), 
-                          random(0, height)));
+  walls.push(new Boundary(random(0, width),
+    random(0, height),
+    random(0, width),
+    random(0, height)));
 }
 
-let step = 10;
 // if keyboard is pressed
 function keyPressed() {
-  if (keyCode == 83) { // if 's'(subtract) is pressed decrease number of rays by 'step'
-    num -= num > step ? step : 0;
-    ls = new LightSource(num);
-  } else if (keyCode == 65) { // if 'a'(add) is pressed increase number of rays by 'step'
-    num += num < 1440 ? step : 1440;
-    ls = new LightSource(num);
-  } else if (keyCode == 68) { // if 'd' is pressed change between display type
+  if (keyCode == 68) { // if 'd' is pressed change between display type
     type = !type;
   }
+  return false;
 }
+
